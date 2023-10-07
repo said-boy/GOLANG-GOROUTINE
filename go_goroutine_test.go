@@ -2,6 +2,7 @@ package golang_goroutine
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 )
@@ -84,6 +85,50 @@ func TestChannelInAndOut(t *testing.T) {
 	go OnlyOut(channel)
 
 	time.Sleep(3 * time.Second)
+
+}
+
+// 6. Buffered Channel
+func TestBufferedChannel(t *testing.T) {
+	channel := make(chan string, 2)
+	defer close(channel)
+
+	channel <- "Muhammad"
+	channel <- "Said"
+
+	fmt.Println(<- channel)
+	fmt.Println(<- channel)
+
+}
+
+// 7. Range Channel
+func TestRangeChannelWithoutBuffered(t *testing.T) {
+	channel := make(chan string) // no buffered
+
+	go func () {
+		for i := 0 ; i < 10 ; i++ {
+			channel <- "Perulangan ke " + strconv.Itoa(i)
+		}
+		close(channel) // harus di close dulu sebelum datanya diambil.
+	}()
+		
+	for data := range channel {
+		fmt.Println("Data", data)
+	}
+
+}
+// 7. Range Channel
+func TestRangeChannelWithBuffered(t *testing.T) {
+	channel := make(chan string, 10) // buffered
+
+	for i := 0 ; i < 10 ; i++ {
+		channel <- "Perulangan ke " + strconv.Itoa(i)
+	}
+	close(channel) // harus di close dulu sebelum datanya diambil.
+
+	for data := range channel {
+		fmt.Println("Data", data)
+	}
 
 }
 
