@@ -18,3 +18,7 @@
     - tetapi ada syarat dimana setelah kita looping memasukkan data channel harus di close, agar bisa menjalankan iterasi atau perulangan pada pengambilan data.
     - jika anda tidak menambahkan buffer pada channel nya, maka perulanganya harus dijalankan secara asyn dan harus di close channel diakhir perulangan.
 
+8. Select channel
+    - dapat mengambil data antara channel yang tercepat.
+    - jumlah case pada select harus sesuai dengan banyaknya channel yang anda punya.
+
