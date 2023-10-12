@@ -3,6 +3,7 @@ package golang_goroutine
 import (
 	"fmt"
 	"strconv"
+	"sync"
 	"testing"
 	"time"
 )
@@ -156,3 +157,68 @@ func TestSelectChannel(t *testing.T) {
 		}
 	}
 }
+
+// 9. Default Select
+func TestDefaultSelectChannel(t *testing.T) {
+	channel1 := make(chan string)
+	channel2 := make(chan string)
+
+	go GiveMeResponse(channel1)
+	go GiveMeResponse(channel2)
+
+	counter := 0
+	for {	
+		select {
+		case data := <- channel1:
+			fmt.Println("Data Dari channel 1 ", data)
+			counter++
+		case data := <- channel2:
+			fmt.Println("Data Dari channel 2 ", data)
+			counter++
+		default:
+			fmt.Println("Menunggu data...")
+		}
+		if counter == 2 {
+			break
+		}
+	}
+}
+
+// 10. Race Condition
+func TestRaceCondition(t *testing.T) {
+	x := 0
+	for i := 0; i < 1000; i++ {
+		go func() {
+			for j := 0; j < 100; j++ {
+				x = x + 1
+			}
+		}()
+	}
+	time.Sleep(10 * time.Second)
+	fmt.Println("Nilai X : ", x)
+}
+
+// 11. sync.Mutex
+func TestMutexRaceCondition(t *testing.T) {
+	x := 0
+	var mutex sync.Mutex
+
+	for i := 0; i < 1000; i++ {
+		go func() {
+			for j := 0; j < 100; j++ {
+				mutex.Lock()
+				x = x + 1
+				mutex.Unlock()
+			}
+		}()
+	}
+	
+	time.Sleep(2 * time.Second)
+	fmt.Println("Nilai X : ", x)
+}
+
+
+
+
+
+

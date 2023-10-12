@@ -22,3 +22,12 @@
     - dapat mengambil data antara channel yang tercepat.
     - jumlah case pada select harus sesuai dengan banyaknya channel yang anda punya.
 
+9. Default Select
+    - Akan menunggu data dari sebuah channel sambil melakukan sesuatu hingga data tersebut ada pada channel, jika tidak ada data atau belum ada data maka akan terus ditunggu.
+
+10. Race Condition
+    - race condition adalah problem dimana ketika kita mengsharing sebuah variabel terhadap goroutine.
+
+11. sync.Mutex
+    - untuk mengatasi race condition bisa menggunakan ini. dimana goroutine yang sejatinya berjalan secara asyn akan dibuat mengantri dalam mengakses variabel yang disharing.
+    - sync.Mutex ini akan membuat variabel yang disharing terkunci untuk 1 goroutine yang tercepat dan setelah goroutine itu selesai maka variabel nya akan terbuka lagi untuk umum.
