@@ -46,3 +46,10 @@
     - digunakan untuk memastikan sebuah function di esekusi hanya sekali, selebihnya akan dihiraukan.
     - hanya goroutine pertama yang dapat mengakses function tersebut.
 
+16. Pool
+    - seperti tempat untuk menyimpan data mirip seperti array atau slice. pool ini digunakan untuk menyimpan data yang mahal akan diambil oleh goroutine.
+    - pool ini mengelola memanfaatkan ulang objek. untuk pengurangan penggunaan memori.
+
+
+
+

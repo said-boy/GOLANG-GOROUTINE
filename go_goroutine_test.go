@@ -296,6 +296,33 @@ func TestOnce(t *testing.T) {
 	fmt.Println("Counter : ", counter)
 }
 
+// 16. Pool
+func TestPool(t *testing.T) {
+	pool := sync.Pool{
+		New: func() interface{} {
+			return "Default" // default value pengganti <nil>
+		},
+	}
+	group := sync.WaitGroup{}
+
+	pool.Put("Muhammad Said")
+	pool.Put("Alkhudri")
+
+	for i := 0; i < 10; i++ {
+		go func(j int){
+			group.Add(1)
+			data := pool.Get() // mengambil data dari pool
+			fmt.Println("Goroutine ke : ",j," data : ",data)
+			time.Sleep(1 * time.Second)
+			pool.Put(data) // meletakkan kembali data pada pool
+			group.Done()
+		}(i)
+	}
+	group.Wait()
+
+}
+
+
 
 
 
