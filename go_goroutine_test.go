@@ -253,4 +253,49 @@ func TestRWMutex(t *testing.T) {
 
 }
 
+// 14. WaitGroup
+func RunAsynchronous(group *sync.WaitGroup, i int) {
+	defer group.Done()
+
+	group.Add(1) 
+
+	fmt.Println("Halo Said ", i)
+}
+
+func TestWaitGroup(t *testing.T) {
+	group := &sync.WaitGroup{}
+
+	for i := 0; i < 10; i++ {
+		go RunAsynchronous(group , i)	
+	}
+
+	group.Wait()
+}
+
+// 15. Once
+var counter = 1
+
+// tidak boleh ada parameter
+func OnlyOnce(){
+	counter++
+}
+
+func TestOnce(t *testing.T) {
+	once := &sync.Once{}
+	group := &sync.WaitGroup{}
+
+	for i := 0; i < 10; i++ {
+		go func() {
+			group.Add(1)
+			once.Do(OnlyOnce) // hanya akan diesekusi sekali
+			group.Done()
+		}()
+	}
+
+	group.Wait()
+	fmt.Println("Counter : ", counter)
+}
+
+
+
 

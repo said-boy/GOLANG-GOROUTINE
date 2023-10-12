@@ -34,3 +34,15 @@
 
 12. RWMutex
     - Read dan Write Mutex
+
+13. Deadlock
+    - adalah error dimana proses berjalan terus menerus. dalam goroutine contoh kasusnya adalah ketika satu goroutine menunggu goroutine lainnya.
+    - error ini juga bisa terjadi saat menggunakan mutex. jadi harus hati" saat menggunakan mutex.
+
+14. WaitGroup
+    - gunakan wait group untuk menunggu semua goroutine selesai.
+
+15. Once
+    - digunakan untuk memastikan sebuah function di esekusi hanya sekali, selebihnya akan dihiraukan.
+    - hanya goroutine pertama yang dapat mengakses function tersebut.
+
