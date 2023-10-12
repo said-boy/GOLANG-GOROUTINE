@@ -31,3 +31,6 @@
 11. sync.Mutex
     - untuk mengatasi race condition bisa menggunakan ini. dimana goroutine yang sejatinya berjalan secara asyn akan dibuat mengantri dalam mengakses variabel yang disharing.
     - sync.Mutex ini akan membuat variabel yang disharing terkunci untuk 1 goroutine yang tercepat dan setelah goroutine itu selesai maka variabel nya akan terbuka lagi untuk umum.
+
+12. RWMutex
+    - Read dan Write Mutex
