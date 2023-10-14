@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -356,7 +357,6 @@ var Group = sync.WaitGroup{}
 
 func WaitCondition(number int){
 	defer Group.Done()
-	Group.Add(1)
 
 	Cond.L.Lock() // mengunci goroutine.
 	
@@ -375,6 +375,7 @@ func TestCond(t *testing.T) {
 
 	// menjalankan sebagai goroutine
 	for i := 0; i < 10; i++ {
+		Group.Add(1)
 		go WaitCondition(i)
 	}
 	// Signal / broadcast harus dijalankan secara goroutine
@@ -384,7 +385,7 @@ func TestCond(t *testing.T) {
 	// keluar satu persatu
 	go func() {
 		for i := 0; i < 10; i++ {
-			time.Sleep(1 * time.Second)
+			time.Sleep(1*time.Second)
 			Cond.Signal()	
 		}
 	}()
@@ -396,8 +397,28 @@ func TestCond(t *testing.T) {
 	// 	}()
 		
 	Group.Wait()
+	fmt.Println("Selesai..")
 
 }
 
+// 19. Atomic
+func TestAtomic(t *testing.T) {
+	var x int64 = 0
+	group := sync.WaitGroup{}
 
+	for i := 0; i < 10; i++ {
+
+		group.Add(1) // ini yang benar (sebelum goroutine dijalankan)
+
+		go func() {
+			atomic.AddInt64(&x, 1)
+			group.Done() // diberikan didalam goroutinenya
+		}()
+
+	}
+
+	group.Wait()
+	fmt.Println(x)
+
+}
 

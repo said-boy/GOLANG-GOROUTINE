@@ -40,6 +40,7 @@
     - error ini juga bisa terjadi saat menggunakan mutex. jadi harus hati" saat menggunakan mutex.
 
 14. WaitGroup
+    - fungsi Add harus ditambahkan sebelum goroutinenya dijalankan
     - gunakan wait group untuk menunggu semua goroutine selesai.
 
 15. Once
@@ -57,6 +58,10 @@
 
 18. Cond
     - akan membuat goroutine menunggu dengan method wait(). hingga signal/boardcase dikirimkan.
+
+19. Atomic
+    - untuk merubah data primitif (int, float, bool, string, Byte, Rune, nil) lebih cocok gunakan atomic.
+    - untuk merubah data non primitif (slice, array, map, struct, interface, channel, fungsi, pointer) lebih cocok gunakan locking dengan Mutex
 
 
 
