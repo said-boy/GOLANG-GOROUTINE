@@ -49,6 +49,14 @@
 16. Pool
     - seperti tempat untuk menyimpan data mirip seperti array atau slice. pool ini digunakan untuk menyimpan data yang mahal akan diambil oleh goroutine.
     - pool ini mengelola memanfaatkan ulang objek. untuk pengurangan penggunaan memori.
+    - jika data tidak diletakkan kembali ke dalam pool. maka goroutine yang mengkases datanya akan mendapat nil. <Gunakan default Value untuk ini>
+
+17. Map
+    - Jika ingin menggunakan map pada goroutine. jangan gunakan map bawaan golang. tapi gunakanlah sync.Map.
+    - sync.Map ini sudah aman dari race condition.
+
+18. Cond
+    - akan membuat goroutine menunggu dengan method wait(). hingga signal/boardcase dikirimkan.
 
 
 

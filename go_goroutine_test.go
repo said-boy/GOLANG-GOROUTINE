@@ -305,7 +305,7 @@ func TestPool(t *testing.T) {
 	}
 	group := sync.WaitGroup{}
 
-	pool.Put("Muhammad Said")
+	pool.Put("Muhammad Said") // Meletakkan data pada pool
 	pool.Put("Alkhudri")
 
 	for i := 0; i < 10; i++ {
@@ -322,7 +322,82 @@ func TestPool(t *testing.T) {
 
 }
 
+// 17. Map
 
+func TestMap(t *testing.T) {
+
+	data := sync.Map{}
+	group := sync.WaitGroup{}
+
+	for i := 0; i < 100; i++ {
+		go func(number int) {
+			group.Add(1)
+
+			data.Store(number, number) // untuk memasukkan data ke map
+
+			group.Done()
+		}(i)
+	}
+
+	group.Wait()
+
+	// mengambil data dari map dengan iteration
+	data.Range(func(key, value any) bool {
+		fmt.Println(key , " : ", value)
+		return true // true = untuk terus mengambil data selanjutnya , false = untuk data pertama saja.
+	})
+
+}
+
+// 18. Cond
+var Mutex = sync.Mutex{}
+var Cond = sync.NewCond(&Mutex) // harus mengisi lockernya. 
+var Group = sync.WaitGroup{}
+
+func WaitCondition(number int){
+	defer Group.Done()
+	Group.Add(1)
+
+	Cond.L.Lock() // mengunci goroutine.
+	
+	Cond.Wait() // menunggu sinyal diberikan
+	/* 
+		jika tidak ada signal yang diberikan akan terjadi error
+		karena goroutine nya menunggu terus. (deadlock!)
+	*/
+	fmt.Println("Goroutine ke : ", number)
+
+	Cond.L.Unlock()
+
+}
+
+func TestCond(t *testing.T) {
+
+	// menjalankan sebagai goroutine
+	for i := 0; i < 10; i++ {
+		go WaitCondition(i)
+	}
+	// Signal / broadcast harus dijalankan secara goroutine
+	// dengan jumlah yang sama seperti go Cond nya.
+
+	// mengirim signal sebagai goroutine ke Cond
+	// keluar satu persatu
+	go func() {
+		for i := 0; i < 10; i++ {
+			time.Sleep(1 * time.Second)
+			Cond.Signal()	
+		}
+	}()
+
+	// keluar bersama sama
+	// go func() {
+	// 	time.Sleep(1 * time.Second)
+	// 	Cond.Broadcast()
+	// 	}()
+		
+	Group.Wait()
+
+}
 
 
 
