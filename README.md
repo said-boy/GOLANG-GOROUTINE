@@ -64,5 +64,13 @@
     - untuk merubah data non primitif (slice, array, map, struct, interface, channel, fungsi, pointer) lebih cocok gunakan locking dengan Mutex
 
 
+20. time.Timer
+    - Memberikan jeda waktu dalam memasukkan data ke dalam channel berdasarkan waktu yang diberikan.
+    - jadi semisal dalam waktu 5 detik data baru akan dimasukkan ke dalam channel.
 
+21. time.Ticker / Tick
+    - untuk kejadian yang berulang
 
+22. GOMAXPROCS
+    - goroutine berjalan didalam thread.
+    - dengan mengubah function ini dengan parameter diatas 0 berarti anda mengubah thread yang ada pada komputer anda yang akan digunakan untuk menjalankan goroutine.

@@ -2,6 +2,7 @@ package golang_goroutine
 
 import (
 	"fmt"
+	"runtime"
 	"strconv"
 	"sync"
 	"sync/atomic"
@@ -420,5 +421,77 @@ func TestAtomic(t *testing.T) {
 	group.Wait()
 	fmt.Println(x)
 
+}
+
+// 20. Timer
+func TestTimer(t *testing.T) {
+	// Manual
+	Manualtimer := time.NewTimer(5 * time.Second)
+	fmt.Println(time.Now())
+	timeManual := <- Manualtimer.C
+	fmt.Println(timeManual)
+	
+	// Auto = otomatis mengambil channelnya saja tanpa .C
+	AutoTimer := time.After(5 * time.Second)
+	timeAuto := <- AutoTimer
+	fmt.Println(timeAuto)
+
+	// otomatis menjalankan function ketika time terpenuhi
+	Group.Add(1)
+	// AfterFunc berjalan secara async
+	time.AfterFunc(5 * time.Second, func(){
+		fmt.Println(time.Now()) // akan dijalankan setelah 5 detik
+		Group.Done()
+	})
+	Group.Wait()
+
+}
+
+// 21. Ticker
+func TestTickerTick(t *testing.T) {
+	fmt.Println("Ticker dimulai...")
+	ticker := time.NewTicker(1 * time.Second)
+	// ticker akan terus berulang, jadi saya membatasinya sebanyak 5 saja.
+	for i := 0; i < 5; i++ {
+		dataTicker := <- ticker.C
+		fmt.Println(dataTicker)
+	}
+	ticker.Stop() // untuk menghentikan ticker
+	fmt.Println("Ticker dihentikan...")
+	
+	fmt.Println("")
+
+	// Tick sama seperti Ticker hanya saja
+	// dia langsung mengembalikan channelnya, tanpa mengakses .C
+	fmt.Println("Tick diMulai...")
+	tick := time.Tick(1 * time.Second)
+	for i := 0; i < 5; i++ {
+		dataTick := <- tick // Tick langsung tanpa .C (channel)
+		fmt.Println(dataTick)
+	}
+	fmt.Println("Tick dihentikan...")
+}
+
+func TestGomaxProcs(t *testing.T) {
+	
+	for i := 0; i < 10; i++ {
+		Group.Add(1)
+		go func() {
+			time.Sleep(3 * time.Second)
+			Group.Done()
+		}()
+	}
+
+	totalCpu := runtime.NumCPU()
+	fmt.Println("Total Cpu : ",totalCpu)
+	
+	// runtime.GOMAXPROCS(20) // untuk mengubah thread
+	totalThread := runtime.GOMAXPROCS(-1)
+	fmt.Println("Total Thread : ",totalThread)
+	
+	totalGoroutine := runtime.NumGoroutine()
+	fmt.Println("Total Goroutine : ",totalGoroutine)
+
+	Group.Wait()
 }
 
